@@ -39,12 +39,24 @@ public class AnomaliesController {
     @GetMapping("/anomaliesByTime/start/{start}/end/{end}")
     @ResponseBody
     public List<TemperatureMeasurement> getAnomaliesByTime(@PathVariable("start") String start, @PathVariable("end") String end) {
-        return anomalyRepository.findAllBetweenStartDateAndEndDate(dateAndTimeConversionManager.fromLocalDateToTimestamp(start), dateAndTimeConversionManager.fromLocalDateToTimestamp(end));
+        return anomalyRepository.findAllBetweenStartDateAndEndDate(dateAndTimeConversionManager.fromStringDateToTimestamp(start), dateAndTimeConversionManager.fromStringDateToTimestamp(end));
     }
 
     @GetMapping("/anomalies/{threshold}")
     @ResponseBody
     public List<AnomaliesCount> getThermometersWithAnomaliesCountBiggerThan(@PathVariable("threshold") int threshold) {
         return anomaliesService.findAllWithAnomaliesCountBiggerThan(threshold);
+    }
+
+    public void setAnomalyRepository(AnomalyRepository anomalyRepository) {
+        this.anomalyRepository = anomalyRepository;
+    }
+
+    public void setAnomaliesService(AnomaliesService anomaliesService) {
+        this.anomaliesService = anomaliesService;
+    }
+
+    public void setDateAndTimeConversionManager(DateAndTimeConversionManager dateAndTimeConversionManager) {
+        this.dateAndTimeConversionManager = dateAndTimeConversionManager;
     }
 }
